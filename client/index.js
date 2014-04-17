@@ -50,9 +50,11 @@ Template.main.monthDays = function() {
 Template.main.userPrice = function() {
   selectedDayDep.depend();
 
-  if (typeof Meteor.user().prices !== 'undefined') {
-    return Meteor.user().prices[getCurrentMonthString() + ' ' + selectedDay];
+  if (typeof Meteor.user().prices === 'undefined') {
+    return undefined;
   }
+
+  return Meteor.user().prices[getCurrentMonthString() + ' ' + selectedDay];
 };
 
 Template.main.events = {
