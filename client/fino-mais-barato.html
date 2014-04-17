@@ -8,8 +8,24 @@
 
 <template name="main">
   <h1>O fino mais barato em Coimbra</h1>
-
   <div id="">{{> loginButtons}}</div>
 
-  <script type="text/javascript" src="js/calendar.js"></script>
+  {{#if loggedIn}}
+    {{#each monthDays}}
+      {{>monthDay}}
+    {{/each}}
+
+    <p>{{userPrice}}</p>
+
+    <input type="text" id="new-price"/>
+    <input type="button" id="new-price-button" value="Update"/>
+  {{else}}
+    <p> Sign Up!</p>
+  {{/if}}
+</template>
+
+<template name="monthDay">
+  <div class="month-day {{selected}}">
+    <span>{{name}} {{number}}</span>
+  </div>
 </template>
