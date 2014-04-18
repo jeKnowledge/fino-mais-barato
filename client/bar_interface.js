@@ -60,7 +60,7 @@ Template.barInterface.days = function() {
     var priceForDay = getPrice(selection.year, selection.month, i);
 
     if (priceForDay !== undefined) { // Is there already a price defined for this day?
-      day['price'] = priceForDay + '€';
+      day['price'] = priceForDay;
     }
 
     if (i === selection.day) { // Is this is the currently selected day?
@@ -92,7 +92,7 @@ Template.barInterface.userPrice = function() {
 Template.barInterface.events = {
   'click .day': function(event) {
     if (event.currentTarget.parentNode.className.indexOf('old') === -1) {
-      selection.day = parseInt(event.currentTarget.innerText.split(' ')[1]);
+      selection.day = Number(event.currentTarget.innerText.split(' ')[1]);
       calendarDep.changed();
     }
   },
@@ -100,7 +100,7 @@ Template.barInterface.events = {
   'click #new-price-button': function() {
     var hashedDate = hashDate(selection.year, selection.month, selection.day);
 
-    var newPrice = parseInt($('#new-price').val());
+    var newPrice = Number($('#new-price').val());
     Meteor.call('changePrice', hashedDate, newPrice);
   },
 

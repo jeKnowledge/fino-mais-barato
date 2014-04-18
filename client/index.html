@@ -42,6 +42,9 @@
 <template name="day">
   <div class="{{old}}">
     <span class="day {{selected}}">{{month}} {{number}}</span>
-    <span>{{price}}</span>
+
+    {{#if price}}
+      <span>{{price}}€</span>
+    {{/if}}
   </div>
 </template>
