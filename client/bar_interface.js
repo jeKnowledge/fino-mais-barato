@@ -11,16 +11,16 @@ var getPrice = function(year, month, day) {
 };
 
 var updateMonth = function(delta) {
-  selectedMonth += delta;
+  selection.month += delta;
 
   /* Handle overflows in year */
 
-  if (selectedMonth == -1) {
-    selectedMonth = 11;
-    selectedYear--;
-  } else if (selectedMonth == 12) {
-    selectedMonth = 0;
-    selectedYear++;
+  if (selection.month == -1) {
+    selection.month = 11;
+    selection.year--;
+  } else if (selection.month == 12) {
+    selection.month = 0;
+    selection.year++;
   }
 
   calendarDep.changed();
@@ -28,20 +28,20 @@ var updateMonth = function(delta) {
 
 var calendarDep = new Deps.Dependency();
 
-var selectedDay, selectedMonth, selectedYear;
+var selection = { }; // selection.day, selection.month, selection.year
 
 Meteor.startup(function() {
   var date = new Date();
 
-  selectedDay = date.getDate();
-  selectedMonth = date.getMonth();
-  selectedYear = date.getFullYear();
+  selection.day = date.getDate();
+  selection.month = date.getMonth();
+  selection.year = date.getFullYear();
 });
 
 Template.barInterface.selectedYear = function() {
   calendarDep.depend();
 
-  return selectedYear;
+  return selection.year;
 };
 
 Template.barInterface.days = function() {
@@ -54,22 +54,22 @@ Template.barInterface.days = function() {
   var date = new Date();
   var result = [];
 
-  for (var i = 1; i <= daysInMonth(selectedYear, selectedMonth + 1); i++) {
-    var day = { month: monthName(selectedMonth), number: i };
+  for (var i = 1; i <= daysInMonth(selection.year, selection.month + 1); i++) {
+    var day = { month: monthName(selection.month), number: i };
 
-    var priceForDay = getPrice(selectedYear, selectedMonth, i);
+    var priceForDay = getPrice(selection.year, selection.month, i);
 
     if (priceForDay !== undefined) { // Is there already a price defined for this day?
       day['price'] = priceForDay + '€';
     }
 
-    if (i === selectedDay) { // Is this is the currently selected day?
+    if (i === selection.day) { // Is this is the currently selected day?
       day['selected'] = 'selected';
     }
 
     if (i < date.getDate() ||
-        selectedMonth < date.getMonth() ||
-        selectedYear < date.getFullYear()) {
+        selection.month < date.getMonth() ||
+        selection.year < date.getFullYear()) {
       day['old'] = 'old';
     }
 
@@ -82,7 +82,7 @@ Template.barInterface.days = function() {
 Template.barInterface.userPrice = function() {
   calendarDep.depend();
 
-  return getPrice(selectedYear, selectedMonth, selectedDay);
+  return getPrice(selection.year, selection.month, selection.day);
 };
 
 
@@ -91,13 +91,13 @@ Template.barInterface.userPrice = function() {
 Template.barInterface.events = {
   'click .day': function(event) {
     if (event.currentTarget.parentNode.className.indexOf('old') === -1) {
-      selectedDay = parseInt(event.currentTarget.innerText.split(' ')[1]);
+      selection.day = parseInt(event.currentTarget.innerText.split(' ')[1]);
       calendarDep.changed();
     }
   },
 
   'click #new-price-button': function() {
-    var hashedDate = hashDate(selectedYear, selectedMonth, selectedDay);
+    var hashedDate = hashDate(selection.year, selection.month, selection.day);
 
     var newPrice = parseInt($('#new-price').val());
     Meteor.call('changePrice', hashedDate, newPrice);
