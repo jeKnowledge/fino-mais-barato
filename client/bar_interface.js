@@ -67,9 +67,10 @@ Template.barInterface.days = function() {
       day['selected'] = 'selected';
     }
 
-    if (i < date.getDate() ||
-        selection.month < date.getMonth() ||
-        selection.year < date.getFullYear()) {
+    if (i < date.getDate() &&
+        selection.month === date.getMonth() &&
+        selection.year === date.getFullYear() ||
+       selection.month < date.getMonth() || selection.year < date.getFullYear()) {
       day['old'] = 'old';
     }
 
