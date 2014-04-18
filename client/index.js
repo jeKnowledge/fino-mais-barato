@@ -8,7 +8,7 @@ var updateMonth = function(delta) {
   selectedMonth += delta;
 
   /* Handle overflows in year */
-  
+
   if (selectedMonth == -1) {
     selectedMonth = 11;
     selectedYear--;
@@ -40,39 +40,48 @@ Template.main.loggedIn = function() {
   return !! Meteor.user();
 };
 
-Template.main.selectedYear = function() {
+Template.barInterface.selectedYear = function() {
   calendarDep.depend();
-  
+
   return selectedYear;
 };
 
-Template.main.monthDays = function() {
+Template.barInterface.days = function() {
   if (typeof Meteor.user().prices === 'undefined') {
     return undefined;
   }
-  
+
   calendarDep.depend();
 
   var date = new Date();
-  var currentMonthDay = date.getDate();
-  var currentYear = date.getFullYear();
   var result = [];
 
-  for (var i = 1; i <= daysInMonth(currentYear, selectedMonth + 1); i++) {
-    var toPush = { name: monthName(selectedMonth), number: i,
-                   price: getPrice(selectedYear, selectedMonth, i) + '€' };
+  for (var i = 1; i <= daysInMonth(selectedYear, selectedMonth + 1); i++) {
+    var day = { month: monthName(selectedMonth), number: i };
 
-    if (i === selectedDay) {
-      toPush['selected'] = 'selected';
+    var priceForDay = getPrice(selectedYear, selectedMonth, i);
+
+    if (priceForDay !== undefined) { // Is there already a price defined for this day?
+      day['price'] = priceForDay + '€';
     }
 
-    result.push(toPush);
+    if (i === selectedDay) { // Is this is the currently selected day?
+      day['selected'] = 'selected';
+    }
+
+    if (i < date.getDate() ||
+        selectedMonth < date.getMonth() ||
+        selectedYear < date.getFullYear()) {
+      day['old'] = 'old';
+    }
+
+    result.push(day);
   }
 
   return result;
 };
 
-Template.main.userPrice = function() {
+Template.barInterface.userPrice = function() {
   calendarDep.depend();
 
   return getPrice(selectedYear, selectedMonth, selectedDay);
@@ -81,10 +90,12 @@ Template.main.userPrice = function() {
 
 /* All the events for the calendar page */
 
-Template.main.events = {
-  'click .month-day': function(event) {
-    selectedDay = parseInt(event.currentTarget.innerText.split(' ')[1]);
-    calendarDep.changed();
+Template.barInterface.events = {
+  'click .day': function(event) {
+    if (event.currentTarget.className.indexOf('old') === -1) {
+      selectedDay = parseInt(event.currentTarget.innerText.split(' ')[1]);
+      calendarDep.changed();
+    }
   },
 
   'click #new-price-button': function() {
@@ -96,7 +107,7 @@ Template.main.events = {
   'click #previous-month-button': function() {
     updateMonth(-1);
   },
-  
+
   'click #next-month-button': function() {
     updateMonth(1);
   }

@@ -4,6 +4,10 @@
   font-weight: bold;
 }
 
-.month-day {
+.day {
   font-style: italic;
+}
+
+.old {
+  color: gray;
 }
