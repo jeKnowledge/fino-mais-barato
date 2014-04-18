@@ -11,21 +11,29 @@
   <div id="">{{> loginButtons}}</div>
 
   {{#if loggedIn}}
+    {{selectedYear}}
+  
     {{#each monthDays}}
       {{>monthDay}}
     {{/each}}
 
-    <p>{{userPrice}}</p>
+    <p>
+      <input type="text" id="new-price" value="{{userPrice}}"/>
+      <input type="button" id="new-price-button" value="Update"/>
+    </p>
 
-    <input type="text" id="new-price"/>
-    <input type="button" id="new-price-button" value="Update"/>
+    <p>
+      <input type="button" id="previous-month-button" value="Previous Month"/>
+      <input type="button" id="next-month-button" value="Next Month"/>
+    </p>
   {{else}}
-    <p> Sign Up!</p>
+    <p>Sign Up!</p>
   {{/if}}
 </template>
 
 <template name="monthDay">
-  <div class="month-day {{selected}}">
-    <span>{{name}} {{number}}</span>
+  <div>
+    <span class="month-day {{selected}}">{{name}} {{number}}</span>
+    <span>{{price}}</span>
   </div>
 </template>
