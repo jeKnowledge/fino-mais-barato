@@ -2,7 +2,7 @@ var getPrice = function(year, month, day) {
   if (Meteor.user().prices === undefined) return undefined;
 
   var price = Meteor.user().prices[hashDate(year, month, day)];
-  
+
   if (price === Infinity) {
     return undefined;
   } else {
@@ -99,8 +99,8 @@ Template.barInterface.events = {
 
   'click #new-price-button': function() {
     var hashedDate = hashDate(selection.year, selection.month, selection.day);
+    var newPrice = Number($('#new-price').val().replace(',', '.'));
 
-    var newPrice = Number($('#new-price').val());
     Meteor.call('changePrice', hashedDate, newPrice);
   },
 
