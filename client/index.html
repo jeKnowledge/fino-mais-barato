@@ -3,18 +3,22 @@
 </head>
 
 <body>
-  {{> main}}
+  {{> index}}
 </body>
 
-<template name="main">
+<template name="index">
   <h1>O fino mais barato em Coimbra</h1>
   <div id="">{{> loginButtons}}</div>
 
   {{#if loggedIn}}
     {{> barInterface}}
   {{else}}
-    <p>Sign Up!</p>
+    {{> answer}}
   {{/if}}
+</template>
+
+<template name="answer">
+  <p>O fino mais barato em Coimbra hoje é no {{bar}} e custa {{price}}.</p>
 </template>
 
 <template name="barInterface">
