@@ -9,7 +9,7 @@ daysInMonth = function(year, month) {
 
 /* Generates the hash for a given date to be used in the database */
 hashDate = function(year, month, day) {
-  return monthNames[month] + ' ' + day;
+  return year + ' ' + monthNames[month] + ' ' + day;
 };
 
 /* Get string name for a given month */

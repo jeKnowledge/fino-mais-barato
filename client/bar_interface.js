@@ -91,9 +91,9 @@ Template.barInterface.events = {
   },
 
   'click #new-price-button': function() {
-    var date = monthName(selectedMonth) + ' ' + selectedDay;
-
-    Meteor.call('changePrice', date, parseInt($('#new-price').val()));
+    var hashedDate = hashDate(selectedYear, selectedMonth, selectedDay);
+    
+    Meteor.call('changePrice', hashedDate, parseInt($('#new-price').val()));
   },
 
   'click #previous-month-button': function() {
