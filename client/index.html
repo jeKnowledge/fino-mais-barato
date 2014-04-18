@@ -10,7 +10,7 @@
   <h1>O fino mais barato em Coimbra</h1>
   <div id="">{{> loginButtons}}</div>
 
-  {{#if loggedIn}}
+  {{#if currentUser}}
     {{> barInterface}}
   {{else}}
     {{> answer}}
