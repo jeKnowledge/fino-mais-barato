@@ -1,7 +1,25 @@
+var bar;
+var price;
+
+var answerDep = new Deps.Dependency();
+
+Template.answer.rendered = function() {
+  Meteor.call('cheapest', function(error, response) {
+    answerDep.changed();
+
+    bar = response.bar;
+    price = response.price;
+  });
+};
+
 Template.answer.bar = function() {
-  return 'Bigorna';
+  answerDep.depend();
+
+  return bar;
 };
 
 Template.answer.price = function() {
-  return '7€';
+  answerDep.depend();
+
+  return price;
 };

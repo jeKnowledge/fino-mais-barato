@@ -1,7 +1,13 @@
 var getPrice = function(year, month, day) {
   if (Meteor.user().prices === undefined) return undefined;
 
-  return Meteor.user().prices[hashDate(year, month, day)];
+  var price = Meteor.user().prices[hashDate(year, month, day)];
+  
+  if (price === Infinity) {
+    return undefined;
+  } else {
+    return price;
+  }
 };
 
 var updateMonth = function(delta) {
@@ -92,8 +98,9 @@ Template.barInterface.events = {
 
   'click #new-price-button': function() {
     var hashedDate = hashDate(selectedYear, selectedMonth, selectedDay);
-    
-    Meteor.call('changePrice', hashedDate, parseInt($('#new-price').val()));
+
+    var newPrice = parseInt($('#new-price').val());
+    Meteor.call('changePrice', hashedDate, newPrice);
   },
 
   'click #previous-month-button': function() {
