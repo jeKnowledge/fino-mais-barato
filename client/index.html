@@ -16,35 +16,3 @@
     {{> answer}}
   {{/if}}
 </template>
-
-<template name="answer">
-  <p>O fino mais barato em Coimbra hoje é no {{bar}} e custa {{price}}€.</p>
-</template>
-
-<template name="barInterface">
-  {{selectedYear}}
-
-  {{#each days}}
-    {{>day}}
-  {{/each}}
-
-  <p>
-    <input type="text" id="new-price" value="{{userPrice}}"/>
-    <input type="button" id="new-price-button" value="Update"/>
-  </p>
-
-  <p>
-    <input type="button" id="previous-month-button" value="Previous Month"/>
-    <input type="button" id="next-month-button" value="Next Month"/>
-  </p>
-</template>
-
-<template name="day">
-  <div class="{{old}}">
-    <span class="day {{selected}}">{{month}} {{number}}</span>
-
-    {{#if price}}
-      <span>{{price}}€</span>
-    {{/if}}
-  </div>
-</template>
