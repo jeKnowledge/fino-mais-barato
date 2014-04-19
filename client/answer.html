@@ -1,3 +1,6 @@
 <template name="answer">
-  <p>O fino mais barato em Coimbra hoje é no {{bar}} e custa {{price}}€.</p>
+  <p>O fino mais barato em Coimbra hoje é {{price}}€ em:</p>
+  {{#each bar}}
+  	<p>-{{this}}</p>
+  {{/each}}
 </template>

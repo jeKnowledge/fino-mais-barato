@@ -41,6 +41,16 @@ Meteor.methods({
       return a.prices[hashedDate] - b.prices[hashedDate];
     });
     
-    return { bar: allUsers[0].emails[0].address, price: allUsers[0].prices[hashedDate] };
+    var list = [];
+    list.push({bar: allUsers[0].emails[0].address, price: allUsers[0].prices[hashedDate]});
+    for(var i = 1; i < allUsers.length; i++){
+      if(allUsers[i].prices[hashedDate] == allUsers[0].prices[hashedDate]){
+        list.push({bar: allUsers[i].emails[0].address, price: allUsers[i].prices[hashedDate]})
+      }
+      else
+        break;
+    }
+
+    return list;
   }
 });

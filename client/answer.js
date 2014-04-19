@@ -1,4 +1,4 @@
-var bar;
+var bars = [];
 var price;
 
 var answerDep = new Deps.Dependency();
@@ -7,15 +7,17 @@ Template.answer.rendered = function() {
   Meteor.call('cheapest', function(error, response) {
     answerDep.changed();
 
-    bar = response.bar;
-    price = response.price;
+    price = response[0].price;
+    for(var i = 0; i < response.length; i++){
+    	bars.push(response[i].bar);
+    }
   });
 };
 
 Template.answer.bar = function() {
   answerDep.depend();
 
-  return bar;
+  return bars;
 };
 
 Template.answer.price = function() {
