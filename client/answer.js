@@ -7,14 +7,12 @@ Template.answer.rendered = function() {
   Meteor.call('cheapest', function(error, response) {
     answerDep.changed();
 
-    price = response[0].price;
-    for(var i = 0; i < response.length; i++){
-    	bars.push(response[i].bar);
-    }
+    price = response.price;
+    bars = response.bars;
   });
 };
 
-Template.answer.bar = function() {
+Template.answer.bars = function() {
   answerDep.depend();
 
   return bars;
