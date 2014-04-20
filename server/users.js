@@ -9,7 +9,7 @@ Meteor.methods({
     /* Updates the beer price for date 'date' */
 
     var currentPrices = Meteor.user().prices;
-    
+
     if (isNaN(newPrice)) {
       currentPrices[hashedDate] = Infinity;
     } else {
@@ -36,22 +36,23 @@ Meteor.methods({
         allUsers[i].prices[hashedDate] = Infinity;
       }
     }
-    
+
     allUsers.sort(function(a, b) {
       return a.prices[hashedDate] - b.prices[hashedDate];
     });
-    
+
     var list = [];
-   
-    for(var i = 0; i < allUsers.length; i++){
-      
-      if(allUsers[i].prices[hashedDate] == allUsers[0].prices[hashedDate])
-        list.push(allUsers[i].emails[0].address);
-      
-      else
-        break;
+    i = 0;
+    while (i < allUsers.length &&
+           allUsers[i].prices[hashedDate] == allUsers[0].prices[hashedDate]) {
+      list.push(allUsers[i].emails[0].address);
+      i++;
     }
 
-    return {bars: list, price: allUsers[0].prices[hashedDate]};
+    if (list.length == 0) {
+      return undefined;
+    }
+    
+    return { bars: list, price: allUsers[0].prices[hashedDate] };
   }
 });
