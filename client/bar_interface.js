@@ -92,7 +92,7 @@ Template.barInterface.userPrice = function() {
 Template.barInterface.events = {
   'click .day': function(event) {
     if (event.currentTarget.parentNode.className.indexOf('old') === -1) {
-      selection.day = Number(event.currentTarget.innerText.split(' ')[1]);
+      selection.day = Number(event.currentTarget.innerHTML.split(' ')[1]);
       calendarDep.changed();
     }
   },
